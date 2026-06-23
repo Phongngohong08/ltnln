@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% block title %}{{ title }}{% endblock %}
+{% block content %}
+<div class="breadcrumb"><a href="/">Trang chủ</a> &rsaquo; {{ part }} &rsaquo; {{ title }}</div>
+<div class="pagetitle"><div class="kicker">{{ part }}</div><h2>{{ title }}</h2></div>
+
+<div class="card">
+  <div class="t"><span class="num">1</span> Thời gian hệ thống hiện tại</div>
+  <div class="b">
+    <div class="actions" style="margin-bottom:8px">
+      <button class="btn btn-primary" onclick="getTime()">Xem thời gian</button>
+    </div>
+    <div id="now" class="console">Nhấn “Xem thời gian”.</div>
+    <p class="note" style="margin-top:10px">Các thao tác thay đổi thời gian yêu cầu quyền
+      <span class="kbd">sudo</span>.</p>
+  </div>
+</div>
+
+<div class="grid2">
+  <div class="card">
+    <div class="t"><span class="num">2</span> Đặt giờ / ngày</div>
+    <div class="b">
+      <div class="field"><label>Giờ mới (HH:MM:SS)</label>
+        <input type="time" id="t_time" step="1"></div>
+      <div class="actions" style="margin-bottom:14px">
+        <button class="btn btn-blue" onclick="setT('time', val('t_time'))">Đặt giờ</button></div>
+      <div class="field"><label>Ngày mới</label>
+        <input type="date" id="t_date"></div>
+      <div class="actions">
+        <button class="btn btn-blue" onclick="setT('date', val('t_date'))">Đặt ngày</button></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="t"><span class="num">3</span> Múi giờ &amp; Đồng bộ NTP</div>
+    <div class="b">
+      <div class="field"><label>Múi giờ</label>
+        <input type="text" id="t_tz" value="Asia/Ho_Chi_Minh"></div>
+      <div class="actions" style="margin-bottom:14px">
+        <button class="btn btn-blue" onclick="setT('tz', val('t_tz'))">Đặt múi giờ</button></div>
+      <p class="note">Đồng bộ thời gian từ máy chủ NTP công cộng (<span class="kbd">pool.ntp.org</span>).</p>
+      <div class="actions">
+        <button class="btn btn-ghost" onclick="setT('ntp','')">Đồng bộ qua NTP</button></div>
+    </div>
+  </div>
+</div>
+
+<div class="result">
+  <div class="rhead">Kết quả thao tác</div>
+  <div id="res" class="console">Chưa có thao tác nào.</div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+function getTime(){ api('/api/time/get',{}).then(function(r){
+  document.getElementById('now').textContent = r.output; }); }
+function setT(kind,value){ api('/api/time/set',{kind:kind,value:value}).then(function(r){
+  showResult('res',r); getTime(); }); }
+window.addEventListener('load', getTime);
+</script>
+{% endblock %}

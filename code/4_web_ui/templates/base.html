@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Hệ thống Quản trị Linux{% endblock %} — Cổng Quản trị Hệ thống Linux</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<div class="topband">
+  <div class="wrap">
+    <span>CỔNG THÔNG TIN ĐIỆN TỬ · HỆ THỐNG QUẢN TRỊ HỆ ĐIỀU HÀNH LINUX</span>
+    <span>Hôm nay: {{ today if today else '' }} <a href="/">Trang chủ</a></span>
+  </div>
+</div>
+
+<header class="masthead">
+  <div class="wrap">
+    <div class="emblem">★</div>
+    <div>
+      <div class="org">Học phần: Lập trình nhân Linux — Báo cáo đồ án môn học</div>
+      <h1>HỆ THỐNG QUẢN TRỊ HỆ ĐIỀU HÀNH LINUX</h1>
+      <div class="sub">Quản lý hệ thống bằng Shell · Lập trình C · Module nhân</div>
+    </div>
+  </div>
+</header>
+
+<nav class="navbar">
+  <div class="wrap">
+    <a href="/" class="{{ 'on' if active=='home' }}">TRANG CHỦ</a>
+    <a href="/p1/file" class="{{ 'on' if active and active.startswith('p1') }}">PHẦN 1 · SHELL</a>
+    <a href="/p2/proc" class="{{ 'on' if active and active.startswith('p2') }}">PHẦN 2 · LẬP TRÌNH C</a>
+    <a href="/p3/kernel" class="{{ 'on' if active and active.startswith('p3') }}">PHẦN 3 · MODULE NHÂN</a>
+  </div>
+</nav>
+
+<div class="container">
+  <aside class="sidebar">
+    <div class="head">Danh mục chức năng</div>
+    <div class="grp">
+      <a href="/" class="{{ 'on' if active=='home' }}">▸ Trang chủ</a>
+    </div>
+    <div class="grp">
+      <div class="grp-t">Phần 1 · Lập trình Shell</div>
+      <a href="/p1/file" class="{{ 'on' if active=='p1_file' }}">Quản lý tệp tin</a>
+      <a href="/p1/cron" class="{{ 'on' if active=='p1_cron' }}">Lập lịch tác vụ</a>
+      <a href="/p1/time" class="{{ 'on' if active=='p1_time' }}">Thời gian hệ thống</a>
+      <a href="/p1/pkg"  class="{{ 'on' if active=='p1_pkg' }}">Quản lý gói phần mềm</a>
+    </div>
+    <div class="grp">
+      <div class="grp-t">Phần 2 · Lập trình C</div>
+      <a href="/p2/proc"   class="{{ 'on' if active=='p2_proc' }}">Quản lý tiến trình</a>
+      <a href="/p2/file"   class="{{ 'on' if active=='p2_file' }}">Quản lý tệp tin (C)</a>
+      <a href="/p2/net"    class="{{ 'on' if active=='p2_net' }}">Thông tin mạng</a>
+      <a href="/p2/socket" class="{{ 'on' if active=='p2_socket' }}">Giao tiếp Socket TCP</a>
+    </div>
+    <div class="grp">
+      <div class="grp-t">Phần 3 · Module nhân</div>
+      <a href="/p3/kernel" class="{{ 'on' if active=='p3_kernel' }}">Quản lý module nhân</a>
+    </div>
+  </aside>
+
+  <main class="content">
+    {% block content %}{% endblock %}
+  </main>
+</div>
+
+<footer>
+  <div class="wrap">
+    <b>HỆ THỐNG QUẢN TRỊ HỆ ĐIỀU HÀNH LINUX</b> — Sản phẩm minh họa đồ án môn học “Lập trình nhân Linux”.
+    <hr>
+    Đơn vị thực hiện: Khoa Công nghệ Thông tin · Bản quyền © 2026. Mọi thao tác được thực thi trực tiếp trên máy chủ Ubuntu.
+  </div>
+</footer>
+
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+{% block script %}{% endblock %}
+</body>
+</html>

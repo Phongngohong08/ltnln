@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+{% block title %}{{ title }}{% endblock %}
+{% block content %}
+<div class="breadcrumb"><a href="/">Trang chủ</a> &rsaquo; {{ part }} &rsaquo; {{ title }}</div>
+<div class="pagetitle"><div class="kicker">{{ part }}</div><h2>{{ title }}</h2></div>
+
+<div class="card">
+  <div class="t"><span class="num">1</span> Danh sách tệp tin &amp; thư mục</div>
+  <div class="b">
+    <p class="note">Mọi thao tác thực hiện trong thư mục an toàn <span class="kbd">~/ltnln_workspace</span>.
+      Tương ứng chương trình <span class="kbd">{{ csource }}</span>.</p>
+    <div class="field" style="display:flex;gap:8px;align-items:flex-end;max-width:560px">
+      <div style="flex:1">
+        <label>Đường dẫn thư mục (tương đối)</label>
+        <input type="text" id="cwd" placeholder="vd: . hoặc thumuc/conlai" value=".">
+      </div>
+      <button class="btn btn-primary" onclick="loadList()">Hiển thị</button>
+    </div>
+    <div id="listflash" class="flash"></div>
+    <table class="tbl" style="margin-top:8px">
+      <thead><tr><th>Tên</th><th style="width:110px">Loại</th><th style="width:110px">Kích thước</th>
+        <th style="width:90px">Quyền</th><th style="width:160px">Sửa đổi lúc</th></tr></thead>
+      <tbody id="filerows"><tr><td colspan="5" style="color:#5b6b7a">Nhấn “Hiển thị” để tải danh sách.</td></tr></tbody>
+    </table>
+  </div>
+</div>
+
+<div class="grid2">
+  <div class="card">
+    <div class="t"><span class="num">2</span> Tạo mới</div>
+    <div class="b">
+      <div class="field"><label>Tên thư mục / tệp tin <span class="req">*</span></label>
+        <input type="text" id="newname" placeholder="vd: baocao  hoặc  ghichu.txt"></div>
+      <div class="actions">
+        <button class="btn btn-blue" onclick="op('mkdir', val('newname'))">Tạo thư mục</button>
+        <button class="btn btn-ghost" onclick="op('touch', val('newname'))">Tạo tệp tin</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="t"><span class="num">3</span> Đổi tên / Sao chép / Di chuyển</div>
+    <div class="b">
+      <div class="field"><label>Nguồn <span class="req">*</span></label>
+        <input type="text" id="src" placeholder="tên nguồn"></div>
+      <div class="field"><label>Đích / Tên mới <span class="req">*</span></label>
+        <input type="text" id="dst" placeholder="tên đích"></div>
+      <div class="actions">
+        <button class="btn btn-blue" onclick="op2('rename')">Đổi tên</button>
+        <button class="btn btn-blue" onclick="op2('copy')">Sao chép</button>
+        <button class="btn btn-blue" onclick="op2('move')">Di chuyển</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="t"><span class="num">4</span> Phân quyền &amp; Nén</div>
+    <div class="b">
+      <div class="field"><label>Tên tệp/thư mục <span class="req">*</span></label>
+        <input type="text" id="cmtarget" placeholder="tên đối tượng"></div>
+      <div class="field"><label>Quyền (hệ bát phân)</label>
+        <input type="text" id="perm" placeholder="vd: 755" style="max-width:140px"></div>
+      <div class="actions">
+        <button class="btn btn-blue" onclick="op('chmod', val('cmtarget'), val('perm'))">Cấp quyền (chmod)</button>
+        <button class="btn btn-ghost" onclick="op('compress', val('cmtarget'))">Nén (.tar.gz)</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="t"><span class="num">5</span> Xóa</div>
+    <div class="b">
+      <div class="field"><label>Tên tệp/thư mục cần xóa <span class="req">*</span></label>
+        <input type="text" id="delname" placeholder="tên đối tượng"></div>
+      <div class="actions">
+        <button class="btn btn-danger"
+          onclick="confirmDo('Xác nhận xóa “'+val('delname')+'”?', function(){op('delete', val('delname'))})">
+          Xóa vĩnh viễn</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="result">
+  <div class="rhead">Kết quả thao tác</div>
+  <div id="res" class="console">Chưa có thao tác nào.</div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+function loadList(){
+  api('/api/file/list', {path: val('cwd')}).then(function(r){
+    var tb = document.getElementById('filerows');
+    if(!r.ok){ flash('listflash', false, r.output); tb.innerHTML=''; return; }
+    document.getElementById('listflash').className='flash';
+    document.getElementById('cwd').value = (r.cwd && r.cwd!=='/') ? r.cwd.slice(1) : '.';
+    if(!r.rows.length){ tb.innerHTML='<tr><td colspan="5" style="color:#5b6b7a">Thư mục rỗng.</td></tr>'; return; }
+    tb.innerHTML = r.rows.map(function(x){
+      var tag = x.type==='Thư mục'
+        ? '<span class="tag tag-dir">Thư mục</span>' : '<span class="tag tag-file">Tệp tin</span>';
+      return '<tr><td>'+x.name+'</td><td>'+tag+'</td><td>'+x.size+' B</td><td>'+x.perm+'</td><td>'+x.mtime+'</td></tr>';
+    }).join('');
+  });
+}
+function op(o, a, b){
+  if(!a){ showResult('res', {ok:false, output:'Vui lòng nhập tên đối tượng.'}); return; }
+  api('/api/file/op', {op:o, a:a, b:b||''}).then(function(r){ showResult('res', r); loadList(); });
+}
+function op2(o){ op(o, val('src'), val('dst')); }
+window.addEventListener('load', loadList);
+</script>
+{% endblock %}

@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% block title %}{{ title }}{% endblock %}
+{% block content %}
+<div class="breadcrumb"><a href="/">Trang chủ</a> &rsaquo; {{ part }} &rsaquo; {{ title }}</div>
+<div class="pagetitle"><div class="kicker">{{ part }}</div><h2>{{ title }}</h2></div>
+
+<div class="grid2">
+  <div class="card">
+    <div class="t"><span class="num">2</span> Tạo tiến trình (fork/exec)</div>
+    <div class="b">
+      <div class="field"><label>Lệnh cần chạy <span class="req">*</span></label>
+        <input type="text" id="cmd" placeholder="vd: ls -l /etc">
+        <div class="hint">Hệ thống tạo tiến trình con để thực thi lệnh và trả về kết quả.</div></div>
+      <div class="actions"><button class="btn btn-blue" onclick="runCmd()">Thực thi</button></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="t"><span class="num">3</span> Gửi tín hiệu / Tiêu diệt</div>
+    <div class="b">
+      <div class="field"><label>PID tiến trình <span class="req">*</span></label>
+        <input type="number" id="pid" placeholder="vd: 1234" style="max-width:160px"></div>
+      <div class="field"><label>Tín hiệu</label>
+        <select id="sig" style="max-width:220px">
+          <option value="15">15 · SIGTERM (kết thúc)</option>
+          <option value="9">9 · SIGKILL (tiêu diệt)</option>
+          <option value="19">19 · SIGSTOP (tạm dừng)</option>
+          <option value="18">18 · SIGCONT (tiếp tục)</option>
+        </select></div>
+      <div class="actions">
+        <button class="btn btn-danger"
+          onclick="confirmDo('Gửi tín hiệu tới PID '+val('pid')+'?', sendSig)">Gửi tín hiệu</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="t"><span class="num">1</span> Danh sách tiến trình đang chạy</div>
+  <div class="b">
+    <div class="actions" style="margin-bottom:8px">
+      <button class="btn btn-primary" onclick="loadProc()">Tải lại danh sách</button>
+    </div>
+    <table class="tbl">
+      <thead><tr><th style="width:90px">PID</th><th style="width:90px">PPID</th>
+        <th style="width:90px">Trạng thái</th><th>Lệnh</th></tr></thead>
+      <tbody id="procrows"><tr><td colspan="4" style="color:#5b6b7a">Nhấn “Tải lại danh sách”.</td></tr></tbody>
+    </table>
+  </div>
+</div>
+
+<div class="result">
+  <div class="rhead">Kết quả thao tác</div>
+  <div id="res" class="console">Chưa có thao tác nào.</div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+function loadProc(){ api('/api/proc/list',{}).then(function(r){
+  var tb=document.getElementById('procrows');
+  tb.innerHTML = r.rows.map(function(x){
+    return '<tr><td>'+x.pid+'</td><td>'+x.ppid+'</td><td>'+x.stat+'</td><td>'+x.cmd+'</td></tr>';
+  }).join(''); }); }
+function runCmd(){
+  if(!val('cmd')){ showResult('res',{ok:false,output:'Vui lòng nhập lệnh.'}); return; }
+  api('/api/proc/run',{cmd:val('cmd')}).then(function(r){ showResult('res',r); }); }
+function sendSig(){ api('/api/proc/signal',{pid:val('pid'),sig:val('sig')}).then(function(r){
+  showResult('res',r); loadProc(); }); }
+window.addEventListener('load', loadProc);
+</script>
+{% endblock %}

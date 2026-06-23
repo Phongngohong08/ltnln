@@ -1,0 +1,163 @@
+/* ===========================================================
+   HE THONG QUAN TRI LINUX - Giao dien phong cach cong thong tin
+   dien tu (hanh chinh / nha nuoc): xanh navy, do co, nghiem tuc.
+   =========================================================== */
+:root{
+  --navy:#0a3d62;
+  --navy-d:#072a44;
+  --blue:#1565a8;
+  --red:#b71c1c;
+  --gold:#d4a017;
+  --bg:#eef2f5;
+  --line:#cdd7df;
+  --ink:#1c2733;
+  --muted:#5b6b7a;
+  --ok:#1b7a3d;
+  --okbg:#e6f4ea;
+  --errbg:#fdecea;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  font-family:Arial,'Segoe UI',Tahoma,sans-serif;
+  font-size:14px;color:var(--ink);background:var(--bg);line-height:1.55;
+}
+a{color:var(--blue);text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* ---------- Top band ---------- */
+.topband{background:var(--red);color:#fff;font-size:12px}
+.topband .wrap{max-width:1200px;margin:0 auto;padding:5px 16px;
+  display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap}
+.topband a{color:#fff}
+
+/* ---------- Header ---------- */
+.masthead{background:linear-gradient(180deg,var(--navy),var(--navy-d));color:#fff}
+.masthead .wrap{max-width:1200px;margin:0 auto;padding:14px 16px;
+  display:flex;align-items:center;gap:16px}
+.emblem{
+  width:62px;height:62px;border-radius:50%;flex:0 0 auto;
+  background:radial-gradient(circle at 50% 38%,var(--gold) 0 30%,#b8860b 31% 100%);
+  display:flex;align-items:center;justify-content:center;
+  color:var(--red);font-size:30px;font-weight:bold;border:2px solid #ffe08a;
+  box-shadow:inset 0 0 0 3px var(--navy-d);
+}
+.masthead .org{font-size:12px;letter-spacing:.5px;text-transform:uppercase;color:#cfe2f3}
+.masthead h1{font-size:22px;margin:2px 0 3px;font-weight:bold}
+.masthead .sub{font-size:12.5px;color:#bcd3e8}
+
+/* ---------- Nav bar ---------- */
+.navbar{background:var(--blue);border-top:3px solid var(--gold)}
+.navbar .wrap{max-width:1200px;margin:0 auto;padding:0 8px;display:flex;flex-wrap:wrap}
+.navbar a{color:#fff;padding:11px 16px;font-weight:bold;font-size:13.5px;
+  border-right:1px solid rgba(255,255,255,.15)}
+.navbar a:hover{background:var(--navy);text-decoration:none}
+.navbar a.on{background:var(--navy)}
+
+/* ---------- Layout ---------- */
+.container{max-width:1200px;margin:16px auto;padding:0 16px;
+  display:grid;grid-template-columns:262px 1fr;gap:18px}
+@media(max-width:900px){.container{grid-template-columns:1fr}}
+
+/* ---------- Sidebar ---------- */
+.sidebar{background:#fff;border:1px solid var(--line);align-self:start}
+.sidebar .head{background:var(--navy);color:#fff;padding:9px 12px;font-weight:bold;
+  font-size:13px;text-transform:uppercase;letter-spacing:.4px}
+.sidebar .grp{padding:8px 0;border-bottom:1px solid var(--line)}
+.sidebar .grp:last-child{border-bottom:none}
+.sidebar .grp-t{padding:5px 12px;color:var(--red);font-weight:bold;font-size:12px;
+  text-transform:uppercase;letter-spacing:.3px}
+.sidebar a{display:block;padding:7px 12px 7px 24px;color:var(--ink);font-size:13.5px;
+  border-left:3px solid transparent}
+.sidebar a:hover{background:#f1f5f9;text-decoration:none}
+.sidebar a.on{background:#eaf2fb;border-left-color:var(--red);color:var(--navy);font-weight:bold}
+
+/* ---------- Content ---------- */
+.content{min-width:0}
+.breadcrumb{font-size:12.5px;color:var(--muted);margin-bottom:10px}
+.breadcrumb a{color:var(--muted)}
+.pagetitle{border-bottom:2px solid var(--navy);padding-bottom:8px;margin-bottom:16px}
+.pagetitle .kicker{color:var(--red);font-size:12px;font-weight:bold;letter-spacing:.5px}
+.pagetitle h2{margin:3px 0 0;font-size:21px;color:var(--navy)}
+
+/* ---------- Card / Panel ---------- */
+.card{background:#fff;border:1px solid var(--line);margin-bottom:18px}
+.card>.t{background:#f4f7fa;border-bottom:1px solid var(--line);padding:9px 14px;
+  font-weight:bold;color:var(--navy);font-size:14px;display:flex;align-items:center;gap:8px}
+.card>.t .num{background:var(--navy);color:#fff;width:20px;height:20px;border-radius:50%;
+  display:inline-flex;align-items:center;justify-content:center;font-size:12px}
+.card>.b{padding:14px}
+.note{font-size:12.5px;color:var(--muted);margin:0 0 12px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+@media(max-width:700px){.grid2,.grid3{grid-template-columns:1fr}}
+
+/* ---------- Form ---------- */
+.field{margin-bottom:11px}
+.field label{display:block;font-weight:bold;font-size:12.5px;margin-bottom:4px;color:#33414f}
+.field .req{color:var(--red)}
+input[type=text],input[type=number],input[type=time],input[type=date],select,textarea{
+  width:100%;padding:8px 10px;border:1px solid #b9c4cd;border-radius:2px;font-size:13.5px;
+  font-family:inherit;background:#fff}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--blue);
+  box-shadow:0 0 0 2px rgba(21,101,168,.15)}
+.hint{font-size:11.5px;color:var(--muted);margin-top:3px}
+.actions{margin-top:6px;display:flex;flex-wrap:wrap;gap:8px}
+
+/* ---------- Buttons ---------- */
+.btn{display:inline-flex;align-items:center;gap:6px;border:1px solid transparent;
+  padding:8px 16px;font-size:13.5px;font-weight:bold;border-radius:2px;cursor:pointer;
+  font-family:inherit;background:#e4e9ee;color:#2a3947}
+.btn:hover{filter:brightness(.96)}
+.btn-primary{background:var(--navy);color:#fff}
+.btn-blue{background:var(--blue);color:#fff}
+.btn-danger{background:var(--red);color:#fff}
+.btn-ghost{background:#fff;border-color:#b9c4cd;color:var(--navy)}
+.btn-sm{padding:4px 10px;font-size:12px}
+
+/* ---------- Tables ---------- */
+table.tbl{width:100%;border-collapse:collapse;font-size:13px}
+table.tbl th,table.tbl td{border:1px solid var(--line);padding:7px 9px;text-align:left}
+table.tbl th{background:#dde7f0;color:var(--navy);font-size:12.5px;text-transform:uppercase;
+  letter-spacing:.3px}
+table.tbl tbody tr:nth-child(even){background:#f6f9fb}
+table.tbl tbody tr:hover{background:#eef5fb}
+.tag{display:inline-block;padding:1px 8px;border-radius:10px;font-size:11.5px;font-weight:bold}
+.tag-dir{background:#fff3d6;color:#8a6100}
+.tag-file{background:#e3eefb;color:#1d5a96}
+.tag-ip4{background:#e6f4ea;color:#1b7a3d}
+.tag-ip6{background:#eae6f7;color:#5a3da0}
+
+/* ---------- Result console ---------- */
+.result{margin-top:12px}
+.result .rhead{font-size:12px;font-weight:bold;color:var(--muted);text-transform:uppercase;
+  letter-spacing:.4px;margin-bottom:5px}
+.console{background:#0d1b2a;color:#d6e2ee;font-family:'Consolas','Courier New',monospace;
+  font-size:12.5px;padding:11px 13px;border-radius:3px;white-space:pre-wrap;word-break:break-word;
+  min-height:46px;max-height:340px;overflow:auto;border:1px solid #08121d}
+.console.ok{border-left:4px solid var(--ok)}
+.console.err{border-left:4px solid var(--red)}
+.flash{padding:9px 12px;border-radius:2px;font-size:13px;margin-bottom:10px;display:none}
+.flash.ok{background:var(--okbg);color:var(--ok);border:1px solid #b7dfc3;display:block}
+.flash.err{background:var(--errbg);color:var(--red);border:1px solid #f3c0bb;display:block}
+
+/* ---------- Dashboard ---------- */
+.hero{background:linear-gradient(120deg,var(--navy),var(--blue));color:#fff;
+  padding:26px 24px;border:1px solid var(--navy-d);margin-bottom:18px}
+.hero h2{margin:0 0 6px;font-size:22px}
+.hero p{margin:0;color:#d6e6f3;max-width:760px}
+.cards3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+@media(max-width:800px){.cards3{grid-template-columns:1fr}}
+.dcard{background:#fff;border:1px solid var(--line);border-top:4px solid var(--navy)}
+.dcard .h{padding:12px 14px;font-weight:bold;color:var(--navy);border-bottom:1px solid var(--line);
+  background:#f4f7fa;font-size:15px}
+.dcard ul{margin:0;padding:10px 14px 14px 30px}
+.dcard li{margin:5px 0}
+.kbd{font-family:Consolas,monospace;background:#eef2f5;border:1px solid var(--line);
+  padding:1px 6px;border-radius:3px;font-size:12px}
+
+/* ---------- Footer ---------- */
+footer{background:var(--navy-d);color:#cfe0ef;margin-top:24px}
+footer .wrap{max-width:1200px;margin:0 auto;padding:18px 16px;font-size:12.5px}
+footer .wrap b{color:#fff}
+footer hr{border:none;border-top:1px solid rgba(255,255,255,.12);margin:10px 0}

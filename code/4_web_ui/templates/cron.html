@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% block title %}{{ title }}{% endblock %}
+{% block content %}
+<div class="breadcrumb"><a href="/">Trang chủ</a> &rsaquo; {{ part }} &rsaquo; {{ title }}</div>
+<div class="pagetitle"><div class="kicker">{{ part }}</div><h2>{{ title }}</h2></div>
+
+<div class="card">
+  <div class="t"><span class="num">1</span> Danh sách tác vụ đã lập lịch</div>
+  <div class="b">
+    <p class="note">Quản lý các tác vụ định kỳ của người dùng thông qua <span class="kbd">crontab</span>.
+      Cú pháp: <span class="kbd">phút giờ ngày tháng thứ &nbsp;lệnh</span>.</p>
+    <div class="actions" style="margin-bottom:8px">
+      <button class="btn btn-primary" onclick="listCron()">Tải lại danh sách</button>
+    </div>
+    <div id="cronout" class="console">Nhấn “Tải lại danh sách”.</div>
+  </div>
+</div>
+
+<div class="grid2">
+  <div class="card">
+    <div class="t"><span class="num">2</span> Thêm tác vụ mới</div>
+    <div class="b">
+      <div class="field"><label>Nội dung lịch <span class="req">*</span></label>
+        <input type="text" id="line" placeholder="vd: */5 * * * * echo hello &gt;&gt; /tmp/log.txt">
+        <div class="hint">Mỗi 5 phút ghi “hello” vào tệp log.</div></div>
+      <div class="actions"><button class="btn btn-blue" onclick="addCron()">Thêm tác vụ</button></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="t"><span class="num">3</span> Xóa tác vụ</div>
+    <div class="b">
+      <div class="field"><label>Số thứ tự dòng cần xóa</label>
+        <input type="number" id="lineno" placeholder="vd: 1" style="max-width:140px"></div>
+      <div class="actions">
+        <button class="btn btn-ghost" onclick="delCron()">Xóa dòng</button>
+        <button class="btn btn-danger"
+          onclick="confirmDo('Xóa TOÀN BỘ tác vụ?', clearCron)">Xóa toàn bộ</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="result">
+  <div class="rhead">Kết quả thao tác</div>
+  <div id="res" class="console">Chưa có thao tác nào.</div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+function listCron(){ api('/api/cron/list',{}).then(function(r){
+  document.getElementById('cronout').textContent = r.output; }); }
+function addCron(){ api('/api/cron/add',{line:val('line')}).then(function(r){
+  showResult('res',r); listCron(); }); }
+function delCron(){ api('/api/cron/delete',{line_no:val('lineno')}).then(function(r){
+  showResult('res',r); listCron(); }); }
+function clearCron(){ api('/api/cron/clear',{}).then(function(r){
+  showResult('res',r); listCron(); }); }
+window.addEventListener('load', listCron);
+</script>
+{% endblock %}

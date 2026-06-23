@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% block title %}Trang chủ{% endblock %}
+{% block content %}
+<div class="hero">
+  <h2>Cổng Quản trị Hệ điều hành Linux</h2>
+  <p>Hệ thống cung cấp giao diện quản trị tập trung cho ba nhóm chức năng của đồ án môn học
+     “Lập trình nhân Linux”: quản lý hệ thống bằng kịch bản Shell, lập trình C tương tác với
+     hệ điều hành, và xây dựng – quản lý module nhân. Mọi thao tác được thực thi trực tiếp trên
+     máy chủ Ubuntu.</p>
+</div>
+
+<div class="cards3">
+  <div class="dcard">
+    <div class="h">Phần 1 · Lập trình Shell</div>
+    <ul>
+      <li><a href="/p1/file">Quản lý tệp tin</a></li>
+      <li><a href="/p1/cron">Lập lịch tác vụ (crontab)</a></li>
+      <li><a href="/p1/time">Thiết lập thời gian hệ thống</a></li>
+      <li><a href="/p1/pkg">Cài đặt / gỡ bỏ gói phần mềm</a></li>
+    </ul>
+  </div>
+  <div class="dcard">
+    <div class="h">Phần 2 · Lập trình C</div>
+    <ul>
+      <li><a href="/p2/proc">Quản lý tiến trình</a></li>
+      <li><a href="/p2/file">Quản lý tệp tin (C)</a></li>
+      <li><a href="/p2/net">Thông tin mạng</a></li>
+      <li><a href="/p2/socket">Giao tiếp Socket TCP</a></li>
+    </ul>
+  </div>
+  <div class="dcard">
+    <div class="h">Phần 3 · Module nhân</div>
+    <ul>
+      <li><a href="/p3/kernel">Biên dịch module nhân</a></li>
+      <li><a href="/p3/kernel">Nạp / gỡ module</a></li>
+      <li><a href="/p3/kernel">Xem nhật ký nhân (dmesg)</a></li>
+    </ul>
+  </div>
+</div>
+
+<div class="card" style="margin-top:18px">
+  <div class="t">Hướng dẫn sử dụng</div>
+  <div class="b">
+    <p class="note">Chọn chức năng tương ứng ở thanh điều hướng phía trên hoặc danh mục bên trái.
+      Một số thao tác (thiết lập thời gian, cài/gỡ gói phần mềm, nạp/gỡ module nhân) yêu cầu
+      quyền quản trị <span class="kbd">sudo</span>; vui lòng khởi chạy máy chủ với quyền phù hợp.</p>
+    <p class="note">Chức năng quản lý tệp tin hoạt động trong thư mục an toàn
+      <span class="kbd">~/ltnln_workspace</span> nhằm tránh ảnh hưởng tới hệ thống.</p>
+  </div>
+</div>
+{% endblock %}

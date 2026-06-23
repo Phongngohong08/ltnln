@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block title %}{{ title }}{% endblock %}
+{% block content %}
+<div class="breadcrumb"><a href="/">Trang chủ</a> &rsaquo; {{ part }} &rsaquo; {{ title }}</div>
+<div class="pagetitle"><div class="kicker">{{ part }}</div><h2>{{ title }}</h2></div>
+
+<div class="card">
+  <div class="t"><span class="num">1</span> Thao tác với gói phần mềm</div>
+  <div class="b">
+    <p class="note">Quản lý gói phần mềm bằng <span class="kbd">apt</span> / <span class="kbd">dpkg</span>.
+      Cài đặt và gỡ bỏ yêu cầu quyền <span class="kbd">sudo</span>.</p>
+    <div class="field" style="max-width:420px"><label>Tên gói / từ khóa</label>
+      <input type="text" id="pkg" placeholder="vd: tree, htop, net-tools"></div>
+    <div class="actions">
+      <button class="btn btn-primary" onclick="pkg('check')">Kiểm tra</button>
+      <button class="btn btn-blue" onclick="pkg('install')">Cài đặt</button>
+      <button class="btn btn-danger" onclick="confirmDo('Gỡ bỏ gói “'+val('pkg')+'”?',function(){pkg('remove')})">Gỡ bỏ</button>
+      <button class="btn btn-ghost" onclick="pkg('search')">Tìm kiếm</button>
+      <button class="btn btn-ghost" onclick="pkg('update')">Cập nhật danh sách</button>
+    </div>
+  </div>
+</div>
+
+<div class="result">
+  <div class="rhead">Kết quả thao tác</div>
+  <div id="res" class="console">Chưa có thao tác nào.</div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+function pkg(o){
+  if(o!=='update' && !val('pkg')){ showResult('res',{ok:false,output:'Vui lòng nhập tên gói.'}); return; }
+  showResult('res',{ok:true,output:'Đang xử lý, vui lòng chờ...'});
+  api('/api/pkg/op',{op:o,name:val('pkg')}).then(function(r){ showResult('res',r); });
+}
+</script>
+{% endblock %}
